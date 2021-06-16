@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\softDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 /**
  * App\Models\Role
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \datetime|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $users
+ * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Query\Builder|Role onlyTrashed()
@@ -60,5 +63,8 @@ class Role extends Model
       'created_at' => 'datetime:d/m/Y'
     ];
 
+    public function users() {
+      return $this->hasMany(User::class);
+    }
 
 }
