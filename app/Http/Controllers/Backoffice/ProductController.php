@@ -15,7 +15,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+
+      $products = Product::get();
+
+        return response()->view('backoffice.products.index', [
+          'products' => $products
+        ]);
     }
 
     /**
@@ -25,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+      return response()->view('backoffice.products.create');
     }
 
     /**
@@ -36,7 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -47,7 +52,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+
+      return response()->view('backoffice.products.show',[
+        'product' => $product]);
     }
 
     /**
