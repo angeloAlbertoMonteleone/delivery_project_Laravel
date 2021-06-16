@@ -16,8 +16,8 @@ use App\Models\Role;
 
 Route::get('/', function () {
     return view('welcome',
-    ['role' => Role::find(3)]);
+    ['roles' => Role::get()]);
 });
 
 
-Route::resource('product', App\Http\Controllers\Backoffice\ProductController::class);
+Route::resource('products', App\Http\Controllers\Backoffice\ProductController::class);
