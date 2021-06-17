@@ -15,8 +15,9 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('restaurant_id');
             $table->integer('rating');
-            $table->text('content');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
