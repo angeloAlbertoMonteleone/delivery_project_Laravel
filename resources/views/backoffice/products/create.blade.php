@@ -5,36 +5,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title></title>
   </head>
-  <body>
+  <body style="max-width: 1000px; margin: auto">
 
-    <form >
+    {{-- <pre>{{ json_encode($productCategories, JSON_PRETTY_PRINT) }}</pre> --}}
 
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      </div>
+    <form method="POST" action="{{ route('products.store') }}">
+      @csrf
 
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Description</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <label for="title" class="form-label">Name</label>
+        <input name="title" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('title') }}">
+
+        @error ('title')
+          <p style=" font-size:15px; color:red">{{ $message }}</p>
+        @enderror
       </div>
 
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Price</label>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" type="email" class="form-control" id="exampleInputPassword1">{{ old('description') }}</textarea>
+
+        @error ('description')
+          <p style="font-size:15px; color:red">{{ $message }}</p>
+        @enderror
       </div>
 
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Category</label>
+      <div class="mb-5 " style="Display:inline">
+        <label class="form-check-label" for="productCategory">Product Category</label>
+        <select id="product-category" class="" name="productCategory" value="{{ old('productCategory') }}">
+          @foreach ($productCategories as $productCategory)
+            <option value="{{ $productCategory->slug }}" >{{ $productCategory->title }}</option>
+          @endforeach
+            <option value="">No choice</option>
+        </select>
+
+        @error ('productCategory')
+          <p style=" font-size:15px;color:red">{{ $message }}</p>
+        @enderror
       </div>
 
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Visible</label>
+
+      <div class="mb-3 mt-3">
+        <label class="form-label" for="price">Price</label>
+        <input type="number" min="0.01" id="price" value="{{ old('price') }}">
+
+        @error ('price')
+          <p style=" font-size:15px; color:red">{{ $message }}</p>
+        @enderror
       </div>
+
+
+      {{-- <div class="mb-3 form-check">
+        <input name="visibility" type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="bisibility">Visible</label>
+
+        @error ('visibility')
+          <p style="font-size:15px; color:red">{{ $message }}</p>
+        @enderror
+      </div> --}}
 
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+      <a class="btn btn-danger" href="{{ route('products.index') }}" name="button">Go back to Products List</a>
   </body>
 </html>
