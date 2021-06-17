@@ -14,15 +14,6 @@ class RatingSeeder extends Seeder
      */
     public function run()
     {
-      $ratings = [
-        ['title' => 'ROOT', 'description' => 'L\'utente che tutto vede e tutto fa'],
-        ['title' => 'ADMIN', 'description' => 'L\'utente da pannello di controllo'],
-        ['title' => 'RESTAURANT', 'description' => 'Utente ristoratore'],
-        ['title' => 'GUEST', 'description' => 'L\'utente del sito web'],
-      ];
-
-      foreach ($ratings as $rating) {
-        $rating = Rating::firstOrCreate($rating);
-      }
+      Rating::factory(50)->create();
     }
 }
