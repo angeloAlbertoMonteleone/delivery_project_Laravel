@@ -22,14 +22,17 @@
     </head>
     <body class="antialiased">
         <div class="">
-          <ul>
-            <li>Title: {{ $role->title }}</li>
-            <li>Description: {{ $role->description }}</li>
-            <li>Created at: {{ $role->created_at->format('d/m/Y') }}</li>
-            <li>Deleted at: {{ $role->deleted_at }}</li>
-            <li>To Json: {{ $role->toJson() }}</li>
+          @foreach ($roles as $role)
+            <ul>
+              <li>Title: {{ $role->title }}</li>
+              <li>Description: {{ $role->description }}</li>
+              <li>Created at: {{ $role->created_at->format('d/m/Y') }}</li>
+              <li>Deleted at: {{ $role->deleted_at }}</li>
+              <li>To Json: {{ $role->toJson() }}</li>
 
-          </ul>
+            </ul>
+          @endforeach
+
         </div>
     </body>
 </html>
