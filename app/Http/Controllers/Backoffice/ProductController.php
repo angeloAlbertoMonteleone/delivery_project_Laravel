@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Models\Backoffice\Product;
+use App\Models\Backoffice\ProductCategory;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Resources\Backoffice\Product\Collection as ProductCollection;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -16,11 +20,14 @@ class ProductController extends Controller
     public function index()
     {
 
-      $products = Product::get();
+      $products = Product::with(['productCategory'])->withCount(['orders'])->get();
 
-        return response()->view('backoffice.products.index', [
-          'products' => $products
-        ]);
+      return response()->view('backoffice.products.index', [
+        'products' => $products
+      ]);
+
+      // if we wanna create a json file for frontend
+      // return new ProductCollection($products);
     }
 
     /**
@@ -30,18 +37,19 @@ class ProductController extends Controller
      */
     public function create()
     {
-      return response()->view('backoffice.products.create');
+      $productCategories = ProductCategory::whereVisible(true)->get();
+      return response()->view('backoffice.products.create', \compact('productCategories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-
+      $data = $request->validated();
     }
 
     /**
