@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Str;
-use App\Models\Product;
+use App\Models\Backoffice\Product;
+use App\Models\Backoffice\ProductCategory;
 
 class ProductSeeder extends Seeder
 {
@@ -26,8 +27,14 @@ class ProductSeeder extends Seeder
             ['title' => 'Pizza salsiccia', 'description' => 'Lorem ipsum dolor sit amet.', 'slug' => Str::slug('Pizza salsiccia'), 'visible' => true, 'price' => 8],
         ];
 
+
+        $productCategory = ProductCategory::find(1);
+
         foreach ($products as $product) {
-            Product::create($product);
+          $model = new Product($product);
+
+          $model->productCategory()->associate($productCategory);
+          $model->save();
         }
     }
 }
