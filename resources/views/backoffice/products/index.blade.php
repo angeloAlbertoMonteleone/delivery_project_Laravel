@@ -22,7 +22,7 @@
           <tbody >
             <td style="border: 1px solid grey">{{$product->id}}</td>
             <td style="border: 1px solid grey">{{ $product->title }}</td>
-            <td style="border: 1px solid grey">{{ $product->product_category_id }}</td>
+            <td style="border: 1px solid grey">{{ $product->productCategory->title }}</td>
             <td style="border: 1px solid grey">{{ $product->description }}</td>
             <td style="border: 1px solid grey">{{ $product->price }}</td>
             <td style="border: 1px solid grey">
@@ -32,7 +32,10 @@
                 <span style="color:red">Not Visible</span>
               @endif
             </td>
-            <td style="border: 1px solid grey">{{ $product->orders()->count() }}</td>
+            <td style="border: 1px solid grey">{{ $product->orders_count }}</td>
+            <td>
+              <a href="{{ route('products.show', ['product' => $product->slug]) }}">See Product</a>
+            </td>
           </tbody>
 
         @endforeach
