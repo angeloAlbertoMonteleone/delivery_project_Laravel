@@ -52,6 +52,7 @@ class ProductCategory extends Model
     protected $fillable = [
       'title',
       'description',
+      'slug',
       'visible',
 
     ];
@@ -64,7 +65,7 @@ class ProductCategory extends Model
     // protected $with = [
     //   'products'
     // ];
-  
+
     public function restaurant(){
       return $this->belongsTo(Restaurant::class);
     }
