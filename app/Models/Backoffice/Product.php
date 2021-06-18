@@ -123,11 +123,16 @@ class Product extends Model
 
     // retrieve the model for a bound value
     public function resolveRouteBinding($value, $field = null) {
-      if(\is_int((int)$value)){
+
+      if(is_numeric($value)){
         return $this->findOrFail($value);
       }
 
       return $this->where('slug', '=', $value)->firstOrFail();
     }
 
+
+    public function getPureFloatPrice() {
+      return $this->attributes['price'];
+    }
 }
