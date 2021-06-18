@@ -14,7 +14,7 @@
 
       <div class="mb-3">
         <label for="title" class="form-label">Name</label>
-        <input name="title" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('title') }}">
+        <input name="title" type="string" class="form-control" id="exampleInputEmail1" value="{{ old('title') }}">
 
         @error ('title')
           <p style=" font-size:15px; color:red">{{ $message }}</p>
@@ -23,7 +23,7 @@
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea name="description" type="email" class="form-control" id="exampleInputPassword1">{{ old('description') }}</textarea>
+        <textarea name="description" type="text" class="form-control" id="exampleInputPassword1">{{ old('description') }}</textarea>
 
         @error ('description')
           <p style="font-size:15px; color:red">{{ $message }}</p>
@@ -47,7 +47,7 @@
 
       <div class="mb-3 mt-3">
         <label class="form-label" for="price">Price</label>
-        <input type="number" min="0.01" id="price" value="{{ old('price') }}">
+        <input name="price" type="number" step="0.01" min="0" id="price" value="{{ old('price') }}">
 
         @error ('price')
           <p style=" font-size:15px; color:red">{{ $message }}</p>
