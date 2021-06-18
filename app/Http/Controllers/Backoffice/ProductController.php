@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Resources\Backoffice\Product\Collection as ProductCollection;
 use App\Http\Requests\StoreProductRequest;
+use Str;
 
 class ProductController extends Controller
 {
@@ -50,6 +51,21 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
       $data = $request->validated();
+
+      $product = new Product([
+        'title' => $data['title'],
+        'slug' => Str::slug($data['title']),
+        'description' => $data['description'],
+        'price' => $data['price'],
+        'visible' => true,
+      ]);
+
+      $productCategory = ProductCategory::whereSlug($data['productCategory'])->firstOrFail();
+
+      $product->productCategory()->associate($productCategory);
+      $product->save();
+
+      return \redirect()->route('products.show', ['product' => $product->slug]);
     }
 
     /**
@@ -73,7 +89,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+      $productCategories = ProductCategory::get();
+
+      return response()->view('backoffice.products.edit', [
+        'productCategories' => $productCategories,
+        'product' => $product]);
     }
 
     /**
