@@ -9,7 +9,9 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Resources\Backoffice\Product\Collection as ProductCollection;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use Str;
+use Arr;
 
 class ProductController extends Controller
 {
@@ -18,13 +20,21 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+      $trashed = $request->get('trashed', false) == true;
 
-      $products = Product::with(['productCategory'])->withCount(['orders'])->get();
+      $query = Product::withCount(['orders']);
+      // if we dont find trashed in our querystring , give me false as default value
+      if($trashed) {
+        $query->onlyTrashed();
+      }
+
+      $products = $query->get();
 
       return response()->view('backoffice.products.index', [
-        'products' => $products
+        'products' => $products,
+        'trashed' => $trashed
       ]);
 
       // if we wanna create a json file for frontend
@@ -103,9 +113,33 @@ class ProductController extends Controller
      * @param  \App\Models\Backoffice\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+
+      if($request->isMethod('PUT')){
+          return $this->restore($product);
+      }
+
+      $data = $request->validated();
+
+      $product->fill([
+        'title' => $data['title'],
+        'slug' => Str::slug($data['title']),
+        'description' => $data['description'],
+        'price' => $data['price'],
+        'visible' => Arr::get($data, 'visible', $product->visible)
+        // $product->visible = $request->input('visible', $product->visible);
+      ]);
+
+      if($product->productCategory->id != $data['productCategory']){
+        $productCategory = ProductCategory::whereSlug($data['productCategory'])->firstOrFail();
+        $product->productCategory()->associate($productCategory);
+
+      }
+
+      $product->save();
+
+      return \redirect()->route('products.show', ['product' => $product->slug]);
     }
 
     /**
@@ -116,6 +150,19 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+      if($product->trashed()){
+        $product->forceDelete();
+      } else {
+        $product->delete();
+      }
+      
+      return \redirect()->route('products.index');
+    }
+
+
+    public function restore($product) {
+      $product->restore();
+
+      return \redirect()->route('products.show', ['product' => $product->slug]);
     }
 }
