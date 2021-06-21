@@ -36,6 +36,22 @@
             <td>
               <a href="{{ route('products.show', ['product' => $product->slug]) }}">See Product</a>
             </td>
+
+            @if ($trashed)
+              <form method="post" class="" action="{{ route('products.update', ['product' => $product->id]) }}" method="post">
+                @csrf
+                @method('PUT')
+
+                <button type="submit" name="button">Restore</button>
+              </form>
+
+              <form method="post" class="" action="{{ route('products.destroy', ['product' => $product->id]) }}" method="post">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" name="button">Delete definitely</button>
+              </form>
+            @endif
           </tbody>
 
         @endforeach
