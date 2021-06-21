@@ -69,6 +69,10 @@ class Product extends Model
     ];
 
 
+    protected $with = [
+      'productCategory'
+    ];
+
     // 1. Accessor and Mutetors
 
     //Defining an Accessor - if I have to show the product in some way
@@ -123,9 +127,16 @@ class Product extends Model
 
     // retrieve the model for a bound value
     public function resolveRouteBinding($value, $field = null) {
+      //
+      // if(\request()->isMethod('PUT') && \request()->route()->named()->named('product.udpate')
+      // || request()->route()->named('product.destroy')) {
+      //   $this->onlyTrashed();
+      // }
+
 
       if(is_numeric($value)){
-        return $this->findOrFail($value);
+        // if you are admin and you are passing an id, you can see the trashed products
+        return $this->withTrashed()->findOrFail($value);
       }
 
       return $this->where('slug', '=', $value)->firstOrFail();
