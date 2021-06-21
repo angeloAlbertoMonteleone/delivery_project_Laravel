@@ -21,8 +21,18 @@
         @endif
 
         <a href="{{  route('products.edit', ['product' => $product->slug]) }}" class="btn btn-dark">Modify</a>
-        <a href="{{  route('products.index') }}" class="btn btn-primary" >Go back to the products list</a>
+
+        <div class="">
+          <form class="" action="{{ route('products.destroy', ['product' => $product->slug]) }}" method="post">
+            @csrf
+            @method('DELETE')
+            
+            <button class="btn btn-danger" href="" type="submit">Delete</a>
+          </form>
+        </div>
       </div>
+
+      <a href="{{  route('products.index') }}" class="btn btn-primary" >Go back to the products list</a>
     </div>
   </body>
 </html>
