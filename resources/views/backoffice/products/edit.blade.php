@@ -10,8 +10,9 @@
     {{-- <pre>{{ json_encode($productCategories, JSON_PRETTY_PRINT) }}</pre> --}}
     <h3>Modify Product</h3>
 
-    <form method="POST" action="{{ route('products.edit', ['product' => $product->slug]) }}">
+    <form method="POST" action="{{ route('products.update', ['product' => $product->slug]) }}">
       @csrf
+      @method('PATCH')
 
       <div class="mb-3">
         <label for="title" class="form-label">Name</label>
